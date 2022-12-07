@@ -1,0 +1,29 @@
+name: Get tag
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  pipeline:
+    name: Sites NextJS (Testing)
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Set relese version
+        run: |
+          echo "RELEASE_VERSION=`echo $(git describe --tags --abbrev=0)`" >> $GITHUB_ENV
+
+      - name: Print env
+        run: |
+          printenv
+
+      - name: Publish release on production
+        run: |
+          curl --request POST \
+          --url https://api.github.com/repos/chuve/github-actions/dispatches \
+          --header 'Accept: application/vnd.github.v3+json' \
+          --header 'Authorization: token ${{ secrets.GH_WORKFLOW_PAT_KEY }}' \
+          --data '{"event_type": "custom_event"}'
