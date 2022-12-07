@@ -6,11 +6,11 @@ on:
 
 jobs:
   pipeline:
-    name: Sites NextJS (Testing)
+    name: Get tag and trigger custom event pipeline
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v1
 
       - name: Set relese version
         run: |
