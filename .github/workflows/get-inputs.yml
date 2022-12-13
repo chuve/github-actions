@@ -1,4 +1,4 @@
-name: Get tag
+name: Inputs
 
 on:
   workflow_dispatch:
@@ -15,10 +15,11 @@ jobs:
       - name: Checkout the repo
         uses: actions/checkout@v3
 
-      - name: Set relese version
-        run: |
-          echo "RELEASE_VERSION=`echo ${{ ${{ inputs.KONTENT_PROJECT_ID || 'DEFAULT VALUE' }} }}`" >> $GITHUB_ENV
-
-      - name: Print env
+      - name: Prepare docker image and push to AWS ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: sites-prod
+          IMAGE_TAG: ${{ env.RELEASE_VERSION }}
+          KONTENT_PROJECT_ID: ${{ inputs.KONTENT_PROJECT_ID || 'DEFAULT' }}
         run: |
           printenv
