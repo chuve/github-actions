@@ -12,8 +12,7 @@ jobs:
     steps:
       - name: Checkout the repo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
+        run: git fetch --tags origin
 
       - name: Set relese version
         run: |
@@ -22,3 +21,5 @@ jobs:
       - name: Print env
         run: |
           printenv
+
+# https://docs.github.com/en/actions/using-jobs/using-concurrency
